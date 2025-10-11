@@ -1,0 +1,314 @@
+<!-- Chosen Palette: Slate & Orange -->
+<!-- Application Structure Plan: The portal for Encontro 4 follows the established and effective three-module learning path (Fundamentos, Mão na Massa, Avaliação). The "Fundamentos" section is designed as a quick-reference guide, introducing the most common React Hooks with concise explanations and syntax examples. The "Mão na Massa" module provides a highly detailed tutorial for building a "To-Do List" application, a classic project that perfectly illustrates the combined use of `useState` (for managing tasks and input) and `useEffect` (for persisting state to localStorage). The tutorial is meticulously detailed for Vite, CRA, and Next.js. -->
+<!-- Visualization & Content Choices: Report Info: React Hooks theory (`useState`, `useEffect`, etc.). -> Goal: Provide a clear and accessible introduction to Hooks. -> Viz/Presentation: A list-based format with distinct cards for each Hook, featuring syntax-highlighted code snippets. -> Interaction: "Copy to clipboard" buttons on code snippets. -> Justification: This format serves as an effective cheat sheet for learners. Report Info: Practical application of `useState` and `useEffect`. -> Goal: Build a functional application to solidify understanding. -> Viz/Presentation: A detailed, step-by-step guide to building a To-Do list app, with all necessary code for components and styles. -> Interaction: "Copy to clipboard" for all code blocks. -> Justification: Building a complete, functional app is the most effective way to learn how Hooks work together in a real-world scenario. The interactive quiz is updated to test these new concepts, reinforcing the learning. -->
+<!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Encontro 4 - Dominando React Hooks</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f1f5f9; }
+        .font-mono { font-family: 'Fira Code', monospace; }
+        .font-display { font-family: 'Poppins', sans-serif; }
+        .nav-link.active { background-color: #f97316; color: #ffffff; }
+        .tab-button.active { border-color: #f97316; background-color: #fff; color: #f97316; font-weight: 600; }
+        .content-section { display: none; }
+        .content-section.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(1rem); } to { opacity: 1; transform: translateY(0); } }
+        .fade-in { animation: fadeIn 0.5s ease-out forwards; }
+        .copy-button .copy-icon, .copy-button .check-icon { transition: transform 0.2s, opacity 0.2s; }
+        .copy-button .check-icon { transform: scale(0); opacity: 0; position: absolute; }
+        .copy-button.copied .copy-icon { transform: scale(0); opacity: 0; }
+        .copy-button.copied .check-icon { transform: scale(1); opacity: 1; }
+        .quiz-question.correct { border-left-color: #22c55e; }
+        .quiz-question.incorrect { border-left-color: #ef4444; }
+    </style>
+</head>
+<body class="bg-slate-100 text-slate-800">
+
+    <div class="flex flex-col md:flex-row min-h-screen">
+        <aside class="w-full md:w-72 bg-white md:border-r border-slate-200 p-6 flex-shrink-0">
+            <header class="flex items-center gap-3 mb-10">
+                <div class="w-10 h-10 bg-slate-800 rounded-lg flex items-center justify-center">
+                     <span class="text-2xl text-orange-400 font-bold">R</span>
+                </div>
+                <div>
+                    <h1 class="text-xl font-bold text-slate-900">Encontro 4</h1>
+                    <p class="text-xs text-slate-500">Dominando React Hooks</p>
+                </div>
+            </header>
+            <nav id="main-navigation">
+                <ul class="space-y-2">
+                    <li><a href="#fundamentos" data-target="fundamentos" class="nav-link flex items-center px-4 py-2.5 rounded-lg text-slate-700 hover:bg-slate-200">Módulo 1: Fundamentos</a></li>
+                    <li><a href="#mao-na-massa" data-target="mao-na-massa" class="nav-link flex items-center px-4 py-2.5 rounded-lg text-slate-700 hover:bg-slate-200">Módulo 2: Mão na Massa</a></li>
+                    <li><a href="#avaliacao" data-target="avaliacao" class="nav-link flex items-center px-4 py-2.5 rounded-lg text-slate-700 hover:bg-slate-200">Módulo 3: Avaliação</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <main class="flex-1 p-6 sm:p-10 overflow-y-auto">
+            
+            <section id="fundamentos" class="content-section space-y-12">
+                <div>
+                    <h1 class="text-4xl font-display font-bold text-slate-900">Módulo 1: O Poder dos Hooks</h1>
+                    <p class="mt-4 text-lg text-slate-600">Hooks são funções que permitem que você "engate" (hook into) o estado e o ciclo de vida do React a partir de componentes de função. Eles revolucionaram a forma como escrevemos componentes, tornando o código mais simples, reutilizável e fácil de entender. Vamos conhecer os principais.</p>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="p-6 bg-white rounded-xl shadow-sm border space-y-3">
+                        <h3 class="text-xl font-bold text-slate-800">useState</h3>
+                        <p class="text-slate-600">O Hook mais fundamental. Ele adiciona estado a um componente de função, permitindo que ele guarde informações que mudam ao longo do tempo e reaja a essas mudanças.</p>
+                        <pre class="bg-slate-800 text-slate-200 p-4 rounded-lg text-sm font-mono"><code>const [estado, setEstado] = useState(valorInicial);</code></pre>
+                    </div>
+                    <div class="p-6 bg-white rounded-xl shadow-sm border space-y-3">
+                        <h3 class="text-xl font-bold text-slate-800">useEffect</h3>
+                        <p class="text-slate-600">Permite executar "efeitos colaterais" em seus componentes. Isso inclui buscar dados de uma API, manipular o DOM diretamente ou salvar dados no `localStorage`.</p>
+                        <pre class="bg-slate-800 text-slate-200 p-4 rounded-lg text-sm font-mono"><code>useEffect(() => {\n  // Código do efeito\n}, [dependencias]);</code></pre>
+                    </div>
+                    <div class="p-6 bg-white rounded-xl shadow-sm border space-y-3">
+                        <h3 class="text-xl font-bold text-slate-800">useContext</h3>
+                        <p class="text-slate-600">Permite acessar um valor de um "Contexto" do React sem precisar passar props por múltiplos níveis de componentes (evitando "prop drilling").</p>
+                    </div>
+                     <div class="p-6 bg-white rounded-xl shadow-sm border space-y-3">
+                        <h3 class="text-xl font-bold text-slate-800">useRef</h3>
+                        <p class="text-slate-600">Fornece uma maneira de acessar nós do DOM diretamente ou de manter uma variável mutável que não causará uma nova renderização quando for alterada.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="mao-na-massa" class="content-section">
+                <h1 class="text-4xl font-display font-bold text-slate-900 mb-4">Módulo 2: Lista de Tarefas</h1>
+                <p class="text-lg text-slate-600 mb-8">Vamos construir uma aplicação de Lista de Tarefas para colocar os Hooks em prática. Usaremos <code class="font-mono text-sm bg-slate-200 p-1 rounded">useState</code> para gerenciar nossas tarefas e <code class="font-mono text-sm bg-slate-200 p-1 rounded">useEffect</code> para salvá-las no `localStorage` do navegador, criando uma experiência persistente.</p>
+                <div id="tab-navigation" class="flex flex-col sm:flex-row items-center gap-2 sm:gap-4 p-2 bg-slate-200 rounded-xl mb-12">
+                    <button data-target="cra-guide" class="tab-button w-full sm:w-auto text-center px-6 py-3 rounded-lg">Create React App</button>
+                    <button data-target="vite-guide" class="tab-button w-full sm:w-auto text-center px-6 py-3 rounded-lg">Vite</button>
+                    <button data-target="nextjs-guide" class="tab-button w-full sm:w-auto text-center px-6 py-3 rounded-lg">Next.js</button>
+                </div>
+                
+                <div id="cra-guide" class="guide-content space-y-6"></div>
+                <div id="vite-guide" class="guide-content space-y-6"></div>
+                <div id="nextjs-guide" class="guide-content space-y-6"></div>
+            </section>
+
+            <section id="avaliacao" class="content-section">
+                <h1 class="text-4xl font-display font-bold text-slate-900 mb-4">Módulo 3: Avaliação</h1>
+                <p class="text-lg text-slate-600 mb-8">Teste seus conhecimentos sobre os Hooks do React.</p>
+                
+                <div class="bg-white p-8 rounded-xl shadow-sm border">
+                    <h2 class="text-2xl font-bold text-slate-800 mb-6">Questionário Interativo</h2>
+                    <div id="quiz-container" class="space-y-6"></div>
+                    <div id="quiz-results" class="mt-8 text-center" ></div>
+                    <div class="flex flex-col sm:flex-row gap-4 mt-6">
+                        <button id="submit-quiz" class="flex-1 w-full bg-orange-500 text-white font-bold py-3 px-6 rounded-lg hover:bg-orange-600 transition-colors">Verificar Respostas</button>
+                        <button id="show-gabarito" class="flex-1 w-full bg-slate-600 text-white font-bold py-3 px-6 rounded-lg hover:bg-slate-700 transition-colors">Ver Gabarito</button>
+                    </div>
+                </div>
+
+                <div id="gabarito-container-wrapper" class="mt-12" style="display: none;">
+                    <h2 class="text-2xl font-bold text-slate-800 mb-6">Gabarito Comentado</h2>
+                    <div id="gabarito-container" class="space-y-6"></div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const copyIconSVG = `<svg class="copy-icon w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>`;
+        const checkIconSVG = `<svg class="check-icon w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>`;
+        
+        const data = {
+            practicalGuides: {
+                shared: {
+                    appCss: `.app {\n  max-width: 600px;\n  margin: 2rem auto;\n  padding: 2rem;\n  background-color: white;\n  border-radius: 8px;\n  box-shadow: 0 4px 10px rgba(0,0,0,0.1);\n}\n\n.title {\n  font-family: 'Poppins', sans-serif;\n  text-align: center;\n  color: #1e293b;\n}\n\n.form {\n  display: flex;\n  gap: 0.5rem;\n  margin-bottom: 2rem;\n}\n\n.input {\n  flex-grow: 1;\n  padding: 0.75rem;\n  border: 1px solid #cbd5e1;\n  border-radius: 6px;\n  font-size: 1rem;\n}\n\n.button {\n  padding: 0.75rem 1.5rem;\n  border: none;\n  background-color: #f97316;\n  color: white;\n  font-weight: bold;\n  border-radius: 6px;\n  cursor: pointer;\n}\n\n.list {\n  list-style: none;\n  padding: 0;\n}\n\n.listItem {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  padding: 0.75rem;\n  border-bottom: 1px solid #e2e8f0;\n}\n\n.deleteButton {\n  padding: 0.25rem 0.5rem;\n  border: none;\n  background-color: #ef4444;\n  color: white;\n  border-radius: 4px;\n  cursor: pointer;\n}`,
+                    appJsx: (isNext) => `import { useState, useEffect } from 'react';\nimport './App.css';\n\nfunction App() {\n  const [tasks, setTasks] = useState([]);\n  const [inputValue, setInputValue] = useState('');\n\n  // Efeito para carregar tarefas do localStorage na primeira renderização\n  useEffect(() => {\n    const savedTasks = localStorage.getItem('tasks');\n    if (savedTasks) {\n      setTasks(JSON.parse(savedTasks));\n    }\n  }, []);\n\n  // Efeito para salvar tarefas no localStorage sempre que 'tasks' mudar\n  useEffect(() => {\n    localStorage.setItem('tasks', JSON.stringify(tasks));\n  }, [tasks]);\n\n  const handleAddTask = (e) => {\n    e.preventDefault();\n    if (inputValue.trim() === '') return;\n    setTasks([...tasks, { id: Date.now(), text: inputValue }]);\n    setInputValue('');\n  };\n\n  const handleDeleteTask = (id) => {\n    setTasks(tasks.filter(task => task.id !== id));\n  };\n\n  return (\n    <div className="app">\n      <h1 className="title">Lista de Tarefas</h1>\n      <form className="form" onSubmit={handleAddTask}>\n        <input\n          type="text"\n          className="input"\n          value={inputValue}\n          onChange={(e) => setInputValue(e.target.value)}\n          placeholder="Nova tarefa..."\n        />\n        <button type="submit" className="button">Adicionar</button>\n      </form>\n      <ul className="list">\n        {tasks.map(task => (\n          <li key={task.id} className="listItem">\n            <span>{task.text}</span>\n            <button onClick={() => handleDeleteTask(task.id)} className="deleteButton">X</button>\n          </li>\n        ))}\n      </ul>\n    </div>\n  );\n}\n\nexport default App;\n${isNext ? "\n// Adicione 'use client' no topo para Next.js 13+ App Router\n// Se estiver usando o pages router, esta linha não é necessária." : ""}`
+                },
+                cra: [
+                    { title: '1. Crie o projeto', command: 'npx create-react-app todo-list-cra' },
+                    { title: '2. Navegue até a pasta do projeto', command: 'cd todo-list-cra' },
+                    { title: '3. Crie o arquivo de estilos', file: 'src/App.css', code: 'SHARED_APP_CSS' },
+                    { title: '4. Substitua o código de `App.js`', file: 'src/App.js', code: 'SHARED_APP_JSX_CRA' },
+                    { title: '5. Limpe o arquivo `index.css`', text: 'Você pode apagar todo o conteúdo de `src/index.css` para que apenas nossos estilos de `App.css` sejam aplicados.' },
+                    { title: '6. Inicie o Servidor', command: 'npm start' },
+                ],
+                vite: [
+                    { title: '1. Crie o projeto', command: 'npm create vite@latest todo-list-vite -- --template react' },
+                    { title: '2. Instale as dependências', command: 'cd todo-list-vite && npm install' },
+                    { title: '3. Crie o arquivo de estilos', file: 'src/App.css', code: 'SHARED_APP_CSS' },
+                    { title: '4. Substitua o código de `App.jsx`', file: 'src/App.jsx', code: 'SHARED_APP_JSX_VITE' },
+                    { title: '5. Limpe o arquivo `index.css`', text: 'Apague todo o conteúdo de `src/index.css`.' },
+                    { title: '6. Inicie o Servidor', command: 'npm run dev' },
+                ],
+                nextjs: [
+                    { title: '1. Crie o projeto', command: 'npx create-next-app@latest todo-list-next' },
+                    { title: '2. Navegue até a pasta do projeto', command: 'cd todo-list-next' },
+                    { title: '3. Crie um novo arquivo de estilos', file: 'app/App.css', code: 'SHARED_APP_CSS' },
+                    { title: '4. Substitua o código de `page.jsx`', file: 'app/page.jsx', code: 'SHARED_APP_JSX_NEXT' },
+                    { title: '5. Adicione a diretiva `use client`', text: 'Como nosso componente usa Hooks de estado e efeitos, ele precisa ser um Componente de Cliente. Adicione a linha `\'use client\';` no topo do arquivo `app/page.jsx`.'},
+                    { title: '6. Limpe o `globals.css`', text: 'Remova os estilos padrão de `app/globals.css`, mas mantenha as diretivas `@tailwind` se o projeto foi criado com Tailwind CSS.'},
+                    { title: '7. Inicie o Servidor', command: 'npm run dev' },
+                ]
+            },
+            quiz: [
+                { id: 'q1', type: 'teorica', question: 'Para que serve o Hook `useState`?', options: ['Para executar efeitos colaterais.', 'Para adicionar estado a um componente de função.', 'Para criar referências a elementos do DOM.'], answer: 'Para adicionar estado a um componente de função.', explanation: '`useState` é o Hook fundamental para declarar uma "variável de estado" que, quando alterada, fará o componente ser renderizado novamente.' },
+                { id: 'q2', type: 'teorica', question: 'O que é o array de dependências no `useEffect`?', options: ['Uma lista de props que o componente recebe.', 'Uma lista de variáveis que, quando alteradas, disparam o efeito novamente.', 'Uma lista de outros Hooks que o efeito usa.'], answer: 'Uma lista de variáveis que, quando alteradas, disparam o efeito novamente.', explanation: 'O `useEffect` só executa novamente se um dos valores no seu array de dependências mudar. Se o array estiver vazio (`[]`), o efeito só roda uma vez, após a montagem do componente.' },
+                { id: 'q3', type: 'teorica', question: 'Qual é uma das "Regras dos Hooks"?', options: ['Só podem ser chamados dentro de loops.', 'Podem ser chamados em qualquer função JavaScript.', 'Só podem ser chamados no nível superior de um componente de função.'], answer: 'Só podem ser chamados no nível superior de um componente de função.', explanation: 'Hooks não devem ser chamados dentro de condições, loops ou funções aninhadas, para garantir que sejam sempre chamados na mesma ordem a cada renderização.' },
+                { id: 'q4', type: 'pratica', question: 'Como você declararia uma variável de estado para um contador, inicializada com 0?', answer: 'const [count, setCount] = useState(0);', explanation: 'A sintaxe de desestruturação de array é usada para obter a variável de estado (`count`) e a função para atualizá-la (`setCount`) a partir da chamada `useState`.' },
+                { id: 'q5', type: 'pratica', question: 'Como você escreveria um `useEffect` que executa uma função `fetchData` apenas uma vez, quando o componente é montado?', answer: "useEffect(() => { fetchData(); }, []);", explanation: 'Passar um array de dependências vazio (`[]`) como segundo argumento para o `useEffect` garante que o efeito seja executado apenas uma vez, após a primeira renderização, simulando o comportamento de `componentDidMount` em classes.' }
+            ]
+        };
+        
+        const mainContent = document.querySelector('main');
+        const nav = document.getElementById('main-navigation');
+        
+        function showSection(targetId) {
+            mainContent.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
+            nav.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+            const section = document.getElementById(targetId);
+            const link = nav.querySelector(`.nav-link[data-target="${targetId}"]`);
+            if (section) {
+                section.classList.add('active', 'fade-in');
+                if (link) link.classList.add('active');
+            }
+        }
+        
+        nav.addEventListener('click', (e) => {
+            const link = e.target.closest('.nav-link');
+            if(link) { e.preventDefault(); const id = link.dataset.target; window.location.hash = id; showSection(id); }
+        });
+
+        function setupCopyButtons() {
+            document.querySelectorAll('.copy-button').forEach(button => {
+                if(button.childElementCount > 0) return;
+                button.innerHTML = copyIconSVG + checkIconSVG;
+                button.addEventListener('click', () => {
+                    const codeElement = button.closest('.bg-slate-800').querySelector('code');
+                    navigator.clipboard.writeText(codeElement.innerText);
+                    button.classList.add('copied');
+                    setTimeout(() => button.classList.remove('copied'), 2000);
+                });
+            });
+        }
+        
+        function renderPracticalGuide() {
+            const shared = data.practicalGuides.shared;
+            const guides = { cra: 'CRA', vite: 'VITE', nextjs: 'NEXT' };
+            Object.keys(guides).forEach(key => {
+                const guideContentEl = document.querySelector(`#${key}-guide`);
+                const isNext = key === 'nextjs';
+
+                // Specific code replacements
+                let appJsxContent = shared.appJsx(isNext);
+                if (isNext) {
+                    appJsxContent = "'use client';\n" + appJsxContent.replace("import './App.css';", "import './App.css';");
+                }
+
+                guideContentEl.innerHTML = data.practicalGuides[key].map(step => {
+                    let finalCode = step.code;
+                    if (finalCode) {
+                        finalCode = finalCode.replace('SHARED_APP_CSS', shared.appCss);
+                        if (key === 'cra') finalCode = finalCode.replace('SHARED_APP_JSX_CRA', shared.appJsx(false));
+                        if (key === 'vite') finalCode = finalCode.replace('SHARED_APP_JSX_VITE', shared.appJsx(false));
+                        if (key === 'nextjs') finalCode = finalCode.replace('SHARED_APP_JSX_NEXT', `'use client';\n` + shared.appJsx(true).replace("import './App.css';", "import './App.css';"));
+                    }
+
+                    let block = '';
+                    if (step.command) {
+                        block = `<div class="bg-slate-800 rounded-lg p-4 flex items-center justify-between"><code class="font-mono text-sm text-slate-200">${step.command}</code><button class="copy-button relative w-8 h-8 flex-shrink-0 bg-slate-600 text-white rounded-md flex items-center justify-center"></button></div>`;
+                    } else if(step.file) {
+                        block = `<div class="bg-slate-800 rounded-lg"><div class="p-4 flex items-center justify-between border-b border-slate-600"><span class="font-mono text-sm text-slate-400">${step.file}</span><button class="copy-button relative w-8 h-8 flex-shrink-0 bg-slate-600 text-white rounded-md"></button></div><pre class="p-4 text-sm"><code class="font-mono text-slate-200">${finalCode.replace(/</g, "&lt;")}</code></pre></div>`;
+                    } else {
+                        return `<div class="p-6 bg-white rounded-xl shadow-sm border"><h3 class="text-xl font-semibold text-slate-800 mb-2">${step.title}</h3><p class="text-slate-600">${step.text}</p></div>`;
+                    }
+                    return `<div class="p-6 bg-white rounded-xl shadow-sm border"><h3 class="text-xl font-semibold text-slate-800 mb-4">${step.title}</h3>${block}</div>`;
+                }).join('');
+            });
+            const tabNav = document.querySelector('#mao-na-massa #tab-navigation');
+            tabNav.addEventListener('click', e => {
+                if(e.target.matches('.tab-button')) {
+                    const target = e.target.dataset.target;
+                    tabNav.querySelectorAll('.tab-button').forEach(b => b.classList.remove('active'));
+                    e.target.classList.add('active');
+                    document.querySelectorAll('#mao-na-massa .guide-content').forEach(c => c.style.display = 'none');
+                    document.querySelector(`#${target}`).style.display = 'block';
+                }
+            });
+            tabNav.querySelector('[data-target="vite-guide"]').click();
+        }
+
+        function renderQuiz() {
+            const container = document.getElementById('quiz-container');
+            container.innerHTML = data.quiz.map((q, i) => {
+                const qNum = i + 1;
+                const header = `<p class="font-semibold text-slate-700">${qNum}. ${q.question}</p>`;
+                let answerHtml = '';
+                if(q.type === 'teorica') {
+                    answerHtml = `<div class="mt-2 space-y-2">${q.options.map(o => `<label class="flex items-center p-3 bg-white rounded-lg border cursor-pointer has-[:checked]:bg-orange-50 has-[:checked]:border-orange-300"><input type="radio" name="q${qNum}" value="${o}" class="h-4 w-4 text-orange-500"><span class="ml-3 text-slate-600">${o}</span></label>`).join('')}</div>`;
+                } else {
+                    answerHtml = `<input id="q${qNum}-answer" type="text" class="mt-2 w-full p-2 border rounded-md font-mono text-sm" placeholder="Escreva o código aqui..."/>`;
+                }
+                return `<div id="q${qNum}" class="quiz-question p-4 bg-slate-50 border-l-4 border-slate-200 rounded-r-lg">${header}${answerHtml}</div>`;
+            }).join('');
+        }
+
+        function renderGabarito() {
+             const container = document.getElementById('gabarito-container');
+             container.innerHTML = data.quiz.map((q, i) => `
+                <div class="p-4 bg-white rounded-xl shadow-sm border">
+                    <p class="font-semibold text-slate-800">${i + 1}. ${q.question}</p>
+                    <p class="mt-2 p-2 bg-green-100 text-green-800 rounded-md text-sm font-mono"><strong>Resposta:</strong> ${q.answer.replace(/</g, "&lt;")}</p>
+                    <p class="mt-2 text-slate-600 text-sm">${q.explanation}</p>
+                </div>`).join('');
+        }
+
+        document.getElementById('submit-quiz').addEventListener('click', () => {
+            let score = 0;
+            data.quiz.forEach((q, i) => {
+                const qNum = i + 1;
+                const qEl = document.getElementById(`q${qNum}`);
+                qEl.classList.remove('correct', 'incorrect');
+                let userAnswer;
+                if(q.type === 'teorica') {
+                    const checked = qEl.querySelector(`input[name=q${qNum}]:checked`);
+                    userAnswer = checked ? checked.value : "";
+                } else {
+                    userAnswer = document.getElementById(`q${qNum}-answer`).value.trim();
+                }
+
+                const normalize = (str) => str.toLowerCase().replace(/;\s*$/, "").replace(/\s+/g, ' ');
+                const isCorrect = normalize(userAnswer) === normalize(q.answer);
+
+                if (isCorrect) { score++; qEl.classList.add('correct'); } 
+                else { qEl.classList.add('incorrect'); }
+            });
+            document.getElementById('quiz-results').innerHTML = `<p class="text-2xl font-display font-bold">Você acertou ${score} de ${data.quiz.length}!</p>`;
+        });
+
+        document.getElementById('show-gabarito').addEventListener('click', () => {
+            const gabaritoWrapper = document.getElementById('gabarito-container-wrapper');
+            const isHidden = gabaritoWrapper.style.display === 'none';
+            gabaritoWrapper.style.display = isHidden ? 'block' : 'none';
+            if(isHidden) {
+                gabaritoWrapper.scrollIntoView({ behavior: 'smooth' });
+            }
+        });
+        
+        function initialize() {
+            renderPracticalGuide();
+            renderQuiz();
+            renderGabarito();
+            setupCopyButtons();
+            const initialTarget = window.location.hash.substring(1) || 'fundamentos';
+            showSection(initialTarget);
+        }
+        initialize();
+    });
+</script>
+</body>
+</html>

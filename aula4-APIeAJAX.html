@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Encontro 4 - Buscando Dados com APIs</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f1f5f9; }
+        .font-mono { font-family: 'Fira Code', monospace; }
+        .font-display { font-family: 'Poppins', sans-serif; }
+        .nav-link.active { background-color: #f97316; color: #ffffff; }
+        .tab-button.active { border-color: #f97316; background-color: #fff; color: #f97316; font-weight: 600; }
+        .content-section { display: none; }
+        .content-section.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(1rem); } to { opacity: 1; transform: translateY(0); } }
+        .fade-in { animation: fadeIn 0.5s ease-out forwards; }
+        .copy-button .copy-icon, .copy-button .check-icon { transition: transform 0.2s, opacity 0.2s; }
+        .copy-button .check-icon { transform: scale(0); opacity: 0; position: absolute; }
+        .copy-button.copied .copy-icon { transform: scale(0); opacity: 0; }
+        .copy-button.copied .check-icon { transform: scale(1); opacity: 1; }
+        .quiz-question.correct { border-left-color: #22c55e; }
+        .quiz-question.incorrect { border-left-color: #ef4444; }
+    </style>
+</head>
+<body class="bg-slate-100 text-slate-800">
+
+    <div class="flex flex-col md:flex-row min-h-screen">
+        <aside class="w-full md:w-72 bg-white md:border-r border-slate-200 p-6 flex-shrink-0">
+            <header class="flex items-center gap-3 mb-10">
+                <div class="w-10 h-10 bg-slate-800 rounded-lg flex items-center justify-center">
+                     <span class="text-2xl text-orange-400 font-bold">R</span>
+                </div>
+                <div>
+                    <h1 class="text-xl font-bold text-slate-900">Encontro 4</h1>
+                    <p class="text-xs text-slate-500">Buscando Dados com APIs</p>
+                </div>
+            </header>
+            <nav id="main-navigation">
+                <ul class="space-y-2">
+                    <li><a href="#fundamentos" data-target="fundamentos" class="nav-link flex items-center px-4 py-2.5 rounded-lg text-slate-700 hover:bg-slate-200">Módulo 1: Fundamentos</a></li>
+                    <li><a href="#mao-na-massa" data-target="mao-na-massa" class="nav-link flex items-center px-4 py-2.5 rounded-lg text-slate-700 hover:bg-slate-200">Módulo 2: Mão na Massa</a></li>
+                    <li><a href="#avaliacao" data-target="avaliacao" class="nav-link flex items-center px-4 py-2.5 rounded-lg text-slate-700 hover:bg-slate-200">Módulo 3: Avaliação</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <main class="flex-1 p-6 sm:p-10 overflow-y-auto">
+            
+            <section id="fundamentos" class="content-section space-y-12">
+                <div>
+                    <h1 class="text-4xl font-display font-bold text-slate-900">Módulo 1: Conectando o Front-end ao Mundo</h1>
+                    <p class="mt-4 text-lg text-slate-600">Aplicações web modernas raramente vivem isoladas; elas precisam buscar, exibir e enviar dados. Este módulo introduz o conceito de APIs, como nos comunicamos com elas usando AJAX, e as ferramentas que tornam esse processo simples no React: Axios para requisições e `json-server` para simular um backend durante o desenvolvimento.</p>
+                </div>
+                
+                <div class="space-y-4">
+                    <h2 class="text-2xl font-bold text-slate-800 border-b-2 border-orange-400 pb-2">O que é AJAX e uma API?</h2>
+                    <p class="text-slate-700">**API (Application Programming Interface)** é um conjunto de regras que permite que diferentes sistemas de software se comuniquem. Em nosso caso, é a "ponte" entre nosso app React (front-end) e um servidor que guarda os dados (back-end). **AJAX (Asynchronous JavaScript and XML)** é a técnica que permite ao nosso app fazer requisições a essa API em segundo plano, sem precisar recarregar a página inteira.</p>
+                </div>
+
+                <div class="space-y-4">
+                    <h2 class="text-2xl font-bold text-slate-800 border-b-2 border-orange-400 pb-2">Axios: Seu Canivete Suíço para Requisições</h2>
+                    <p class="text-slate-700">Axios é uma biblioteca JavaScript que simplifica o processo de fazer requisições HTTP. Ela é baseada em Promises, tornando o código assíncrono mais limpo e legível. A operação mais comum que faremos é a `GET`, para buscar dados de um servidor.</p>
+                     <div class="bg-white p-6 rounded-xl shadow-sm border">
+                        <pre class="bg-slate-800 text-slate-200 p-4 rounded-lg text-sm font-mono"><code>import axios from 'axios';
+
+// Exemplo de como buscar dados
+axios.get('https://api.exemplo.com/dados')
+  .then(response => {
+    // Sucesso! Os dados estão em response.data
+    console.log(response.data);
+  })
+  .catch(error => {
+    // Ocorreu um erro na requisição
+    console.error('Erro ao buscar dados:', error);
+  });</code></pre>
+                    </div>
+                </div>
+
+                <div class="space-y-4">
+                    <h2 class="text-2xl font-bold text-slate-800 border-b-2 border-orange-400 pb-2">Simulando uma API com `json-server`</h2>
+                    <p class="text-slate-700">Enquanto o back-end está sendo desenvolvido, não podemos parar. `json-server` é uma ferramenta incrível que cria uma API REST completa a partir de um simples arquivo <code class="font-mono text-sm bg-slate-200 p-1 rounded">.json</code>. Isso nos permite construir e testar nosso front-end como se estivéssemos conectados a uma API real.</p>
+                </div>
+            </section>
+
+            <section id="mao-na-massa" class="content-section">
+                <h1 class="text-4xl font-display font-bold text-slate-900 mb-4">Módulo 2: Blog de Artigos Pet</h1>
+                <p class="text-lg text-slate-600 mb-8">Vamos construir uma página que busca e exibe artigos de um blog pet. Colocaremos em prática o uso de `useState` para guardar os artigos, `useEffect` para disparar a busca de dados com `axios`, e `json-server` para nos fornecer os dados.</p>
+                <div id="tab-navigation" class="flex flex-col sm:flex-row items-center gap-2 sm:gap-4 p-2 bg-slate-200 rounded-xl mb-12">
+                    <button data-target="cra-guide" class="tab-button w-full sm:w-auto text-center px-6 py-3 rounded-lg">Create React App</button>
+                    <button data-target="vite-guide" class="tab-button w-full sm:w-auto text-center px-6 py-3 rounded-lg">Vite</button>
+                    <button data-target="nextjs-guide" class="tab-button w-full sm:w-auto text-center px-6 py-3 rounded-lg">Next.js</button>
+                </div>
+                
+                <div id="cra-guide" class="guide-content space-y-6"></div>
+                <div id="vite-guide" class="guide-content space-y-6"></div>
+                <div id="nextjs-guide" class="guide-content space-y-6"></div>
+            </section>
+
+            <section id="avaliacao" class="content-section">
+                <h1 class="text-4xl font-display font-bold text-slate-900 mb-4">Módulo 3: Avaliação</h1>
+                <p class="text-lg text-slate-600 mb-8">Teste seus conhecimentos sobre Hooks e a busca de dados em aplicações React.</p>
+                
+                <div class="bg-white p-8 rounded-xl shadow-sm border">
+                    <h2 class="text-2xl font-bold text-slate-800 mb-6">Questionário Interativo</h2>
+                    <div id="quiz-container" class="space-y-6"></div>
+                    <div id="quiz-results" class="mt-8 text-center" ></div>
+                    <div class="flex flex-col sm:flex-row gap-4 mt-6">
+                        <button id="submit-quiz" class="flex-1 w-full bg-orange-500 text-white font-bold py-3 px-6 rounded-lg hover:bg-orange-600 transition-colors">Verificar Respostas</button>
+                        <button id="show-gabarito" class="flex-1 w-full bg-slate-600 text-white font-bold py-3 px-6 rounded-lg hover:bg-slate-700 transition-colors">Ver Gabarito</button>
+                    </div>
+                </div>
+
+                <div id="gabarito-container-wrapper" class="mt-12" style="display: none;">
+                    <h2 class="text-2xl font-bold text-slate-800 mb-6">Gabarito Comentado</h2>
+                    <div id="gabarito-container" class="space-y-6"></div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const copyIconSVG = `<svg class="copy-icon w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>`;
+        const checkIconSVG = `<svg class="check-icon w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>`;
+        
+        const data = {
+            practicalGuides: {
+                shared: {
+                    dbJson: `{\n  "categorias": [\n    {\n      "id": "bem-estar",\n      "nome": "bem-estar",\n      "subcategorias": ["higiene", "saude"]\n    },\n    {\n      "id": "comportamento",\n      "nome": "comportamento",\n      "subcategorias": ["treinamento", "educacao"]\n    }\n  ],\n  "posts": [\n    {\n      "id": 1,\n      "title": "Banho no catiorrinho",\n      "metadescription": "Use as utensilios certos para banhar seu cão",\n      "body": "Banhos regulares mantém os pelos e pele de seu cachorro limpa, renovada e saudável...",\n      "categoria": "bem-estar",\n      "subcategoria": "higiene"\n    },\n    {\n      "id": 2,\n      "title": "Seu catiorrinho merece um tapete refrescante",\n      "metadescription": "O frescor que seu pet merece",\n      "body": "O produto é um colchonete de nylon, recheado com espuma e gel (não tóxico)...",\n      "categoria": "bem-estar",\n      "subcategoria": "higiene"\n    },\n    {\n      "id": 3,\n      "title": "Cuidado com as pulgas!",\n      "metadescription": "Evite que seus animais sejam afetados por esses parasitas",\n      "body": "Para prevenir que o seu pet seja infestado, coleiras e sprays anti-pulgas e carrapatos são boas opções...",\n      "categoria": "bem-estar",\n      "subcategoria": "saude"\n    },\n    {\n      "id": 4,\n      "title": "Uma onda de pets estressados",\n      "metadescription": "Você está triste, doente ou nervoso, e o pet acaba imitando o seu comportamento",\n      "body": "Atenção e carinho. A primeira coisa que você deve saber, caso ainda não tenha adotado um pet, é que ele demanda tempo...",\n      "categoria": "comportamento",\n      "subcategoria": "educacao"\n    }\n  ]\n}`,
+                    appCss: `.app {\n  max-width: 900px;\n  margin: 2rem auto;\n  padding: 2rem;\n}\n\n.title {\n  font-family: 'Poppins', sans-serif;\n  text-align: center;\n  color: #1e293b;\n  margin-bottom: 2rem;\n}\n\n.postGrid {\n  display: grid;\n  grid-template-columns: repeat(1, 1fr);\n  gap: 1.5rem;\n}\n\n@media (min-width: 768px) {\n  .postGrid {\n    grid-template-columns: repeat(2, 1fr);\n  }\n}\n\n.postCard {\n  background-color: white;\n  border: 1px solid #e2e8f0;\n  border-radius: 8px;\n  padding: 1.5rem;\n  box-shadow: 0 4px 6px rgba(0,0,0,0.05);\n}\n\n.postCard h2 {\n  font-family: 'Poppins', sans-serif;\n  font-size: 1.25rem;\n  margin-top: 0;\n  color: #1e293b;\n}\n\n.postCard p {\n  color: #64748b;\n}`,
+                    appJsx: (isNext) => `${isNext ? "'use client';\n" : ""}import { useState, useEffect } from 'react';\nimport axios from 'axios';\nimport './App.css';\n\nfunction App() {\n  const [posts, setPosts] = useState([]);\n\n  useEffect(() => {\n    // A URL padrão do json-server é http://localhost:3001\n    axios.get('http://localhost:3001/posts')\n      .then(response => {\n        setPosts(response.data);\n      })\n      .catch(error => {\n        console.error('Houve um erro ao buscar os posts:', error);\n      });\n  }, []); // O array vazio garante que o efeito rode apenas uma vez\n\n  return (\n    <div className="app">\n      <h1 className="title">Blog de Artigos Pet</h1>\n      <div className="postGrid">\n        {posts.map(post => (\n          <div key={post.id} className="postCard">\n            <h2>{post.title}</h2>\n            <p>{post.metadescription}</p>\n          </div>\n        ))}\n      </div>\n    </div>\n  );\n}\n\nexport default App;`
+                },
+                cra: [
+                    { title: '1. Crie o projeto e instale as dependências', command: 'npx create-react-app pet-blog-cra && cd pet-blog-cra && npm install axios json-server' },
+                    { title: '2. Crie o arquivo `db.json`', file: 'db.json', text: 'Crie este arquivo na raiz do seu projeto (fora da pasta `src`).' , code: 'SHARED_DB_JSON' },
+                    { title: '3. Adicione o script para rodar a API', file: 'package.json', text: 'Adicione a linha `"api": "json-server --watch db.json --port 3001"` na seção `"scripts"`.'},
+                    { title: '4. Crie o arquivo de estilos', file: 'src/App.css', code: 'SHARED_APP_CSS' },
+                    { title: '5. Substitua o código de `App.js`', file: 'src/App.js', code: 'SHARED_APP_JSX_CRA' },
+                    { title: '6. Inicie a API e a Aplicação', text: 'Você precisará de dois terminais. Em um, rode a API. No outro, inicie o app React.'},
+                    { title: 'Terminal 1 (API)', command: 'npm run api' },
+                    { title: 'Terminal 2 (App)', command: 'npm start' },
+                ],
+                vite: [
+                    { title: '1. Crie o projeto e instale as dependências', command: 'npm create vite@latest pet-blog-vite -- --template react && cd pet-blog-vite && npm install && npm install axios json-server' },
+                    { title: '2. Crie o arquivo `db.json`', file: 'db.json', text: 'Crie este arquivo na raiz do seu projeto (fora da pasta `src`).' , code: 'SHARED_DB_JSON' },
+                    { title: '3. Adicione o script para rodar a API', file: 'package.json', text: 'Adicione a linha `"api": "json-server --watch db.json --port 3001"` na seção `"scripts"`.'},
+                    { title: '4. Crie o arquivo de estilos', file: 'src/App.css', code: 'SHARED_APP_CSS' },
+                    { title: '5. Substitua o código de `App.jsx`', file: 'src/App.jsx', code: 'SHARED_APP_JSX_VITE' },
+                    { title: '6. Inicie a API e a Aplicação', text: 'Você precisará de dois terminais. Em um, rode a API. No outro, inicie o app React.'},
+                    { title: 'Terminal 1 (API)', command: 'npm run api' },
+                    { title: 'Terminal 2 (App)', command: 'npm run dev' },
+                ],
+                nextjs: [
+                    { title: '1. Crie o projeto e instale as dependências', command: 'npx create-next-app@latest pet-blog-next && cd pet-blog-next && npm install axios json-server' },
+                    { title: '2. Crie o arquivo `db.json`', file: 'db.json', text: 'Crie este arquivo na raiz do seu projeto.' , code: 'SHARED_DB_JSON' },
+                    { title: '3. Adicione o script para rodar a API', file: 'package.json', text: 'Adicione a linha `"api": "json-server --watch db.json --port 3001"` na seção `"scripts"`.'},
+                    { title: '4. Crie um novo arquivo de estilos', file: 'app/App.css', code: 'SHARED_APP_CSS' },
+                    { title: '5. Substitua o código de `page.jsx`', file: 'app/page.jsx', text: 'Adicione `\'use client\';` no topo e `import \'./App.css\';`' , code: 'SHARED_APP_JSX_NEXT' },
+                    { title: '6. Inicie a API e a Aplicação', text: 'Você precisará de dois terminais. Em um, rode a API. No outro, inicie o app React.'},
+                    { title: 'Terminal 1 (API)', command: 'npm run api' },
+                    { title: 'Terminal 2 (App)', command: 'npm run dev' },
+                ]
+            },
+            quiz: [
+                { id: 'q1', type: 'teorica', question: 'Qual é o propósito do `useEffect` com um array de dependências vazio (`[]`)?', options: ['Executar o efeito a cada renderização.', 'Executar o efeito apenas uma vez, após a primeira renderização do componente.', 'Executar o efeito apenas quando o componente é desmontado.'], answer: 'Executar o efeito apenas uma vez, após a primeira renderização do componente.', explanation: 'Um array de dependências vazio diz ao React que o efeito não depende de nenhum valor das props ou estado, então ele só precisa ser executado uma vez, simulando o `componentDidMount`.' },
+                { id: 'q2', type: 'teorica', question: 'Por que usamos `json-server` no desenvolvimento?', options: ['Para otimizar o build final da aplicação.', 'Para substituir o back-end, criando uma API REST falsa rapidamente a partir de um arquivo JSON.', 'Para instalar pacotes do npm mais rápido.'], answer: 'Para substituir o back-end, criando uma API REST falsa rapidamente a partir de um arquivo JSON.', explanation: '`json-server` é uma ferramenta de prototipação que permite que o time de front-end trabalhe com uma API funcional sem depender que o back-end esteja pronto.' },
+                { id: 'q3', type: 'teorica', question: 'Em uma requisição com `axios`, onde geralmente se encontram os dados retornados pela API?', options: ['response.body', 'response.data', 'response.json'], answer: 'response.data', explanation: 'Por padrão, o Axios processa a resposta JSON e coloca o objeto de dados resultante diretamente na propriedade `data` do objeto de resposta.' },
+                { id: 'q4', type: 'pratica', question: 'Qual comando você adicionaria ao `package.json` para iniciar o `json-server` na porta 3001 observando um arquivo `data.json`?', answer: '"api": "json-server --watch data.json --port 3001"', explanation: 'O script "api" é uma convenção comum. `--watch` observa mudanças no arquivo, e `--port` define a porta.' },
+                { id: 'q5', type: 'pratica', question: 'Como você inicializa um estado para `posts` que espera receber um array da API?', answer: 'const [posts, setPosts] = useState([]);', explanation: 'É uma boa prática inicializar o estado com o mesmo tipo de dado que ele irá armazenar (neste caso, um array vazio) para evitar erros de "undefined" ao tentar mapear sobre ele na primeira renderização.' }
+            ]
+        };
+        
+        const mainContent = document.querySelector('main');
+        const nav = document.getElementById('main-navigation');
+        
+        function showSection(targetId) {
+            mainContent.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
+            nav.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+            const section = document.getElementById(targetId);
+            const link = nav.querySelector(`.nav-link[data-target="${targetId}"]`);
+            if (section) {
+                section.classList.add('active', 'fade-in');
+                if (link) link.classList.add('active');
+            }
+        }
+        
+        nav.addEventListener('click', (e) => {
+            const link = e.target.closest('.nav-link');
+            if(link) { e.preventDefault(); const id = link.dataset.target; window.location.hash = id; showSection(id); }
+        });
+
+        function setupCopyButtons() {
+            document.querySelectorAll('.copy-button').forEach(button => {
+                if(button.childElementCount > 0) return;
+                button.innerHTML = copyIconSVG + checkIconSVG;
+                button.addEventListener('click', () => {
+                    const codeElement = button.closest('.bg-slate-800').querySelector('code');
+                    navigator.clipboard.writeText(codeElement.innerText);
+                    button.classList.add('copied');
+                    setTimeout(() => button.classList.remove('copied'), 2000);
+                });
+            });
+        }
+        
+        function renderPracticalGuide() {
+            const shared = data.practicalGuides.shared;
+            const guides = { cra: 'CRA', vite: 'VITE', nextjs: 'NEXT' };
+            Object.keys(guides).forEach(key => {
+                const guideContentEl = document.querySelector(`#${key}-guide`);
+                const isNext = key === 'nextjs';
+                
+                guideContentEl.innerHTML = data.practicalGuides[key].map(step => {
+                    let finalCode = step.code;
+                    if (step.code) { // Check if step.code exists
+                        finalCode = finalCode.replace('SHARED_DB_JSON', shared.dbJson);
+                        finalCode = finalCode.replace('SHARED_APP_CSS', shared.appCss);
+                        if (key === 'cra') finalCode = finalCode.replace('SHARED_APP_JSX_CRA', shared.appJsx(false));
+                        if (key === 'vite') finalCode = finalCode.replace('SHARED_APP_JSX_VITE', shared.appJsx(false));
+                        if (key === 'nextjs') finalCode = finalCode.replace('SHARED_APP_JSX_NEXT', shared.appJsx(true));
+                    }
+
+                    let block = '';
+                    if (step.command) {
+                        block = `<div class="bg-slate-800 rounded-lg p-4 flex items-center justify-between"><code class="font-mono text-sm text-slate-200">${step.command}</code><button class="copy-button relative w-8 h-8 flex-shrink-0 bg-slate-600 text-white rounded-md flex items-center justify-center"></button></div>`;
+                    } else if(step.file && step.code) { // Check for both file and code
+                         const fileHeader = step.text ? `<p class="text-slate-600 mb-2">${step.text}</p>` : '';
+                        block = `${fileHeader}<div class="bg-slate-800 rounded-lg"><div class="p-4 flex items-center justify-between border-b border-slate-600"><span class="font-mono text-sm text-slate-400">${step.file}</span><button class="copy-button relative w-8 h-8 flex-shrink-0 bg-slate-600 text-white rounded-md"></button></div><pre class="p-4 text-sm"><code class="font-mono text-slate-200">${finalCode.replace(/</g, "&lt;")}</code></pre></div>`;
+                    } else { // This will now handle text-only or file+text steps
+                        return `<div class="p-6 bg-white rounded-xl shadow-sm border"><h3 class="text-xl font-semibold text-slate-800 mb-2">${step.title}</h3><p class="text-slate-600">${step.text}</p></div>`;
+                    }
+                    return `<div class="p-6 bg-white rounded-xl shadow-sm border"><h3 class="text-xl font-semibold text-slate-800 mb-4">${step.title}</h3>${block}</div>`;
+                }).join('');
+            });
+            const tabNav = document.querySelector('#mao-na-massa #tab-navigation');
+            tabNav.addEventListener('click', e => {
+                if(e.target.matches('.tab-button')) {
+                    const target = e.target.dataset.target;
+                    tabNav.querySelectorAll('.tab-button').forEach(b => b.classList.remove('active'));
+                    e.target.classList.add('active');
+                    document.querySelectorAll('#mao-na-massa .guide-content').forEach(c => c.style.display = 'none');
+                    document.querySelector(`#${target}`).style.display = 'block';
+                }
+            });
+            tabNav.querySelector('[data-target="vite-guide"]').click();
+        }
+
+        function renderQuiz() {
+            const container = document.getElementById('quiz-container');
+            container.innerHTML = data.quiz.map((q, i) => {
+                const qNum = i + 1;
+                const header = `<p class="font-semibold text-slate-700">${qNum}. ${q.question}</p>`;
+                let answerHtml = '';
+                if(q.type === 'teorica') {
+                    answerHtml = `<div class="mt-2 space-y-2">${q.options.map(o => `<label class="flex items-center p-3 bg-white rounded-lg border cursor-pointer has-[:checked]:bg-orange-50 has-[:checked]:border-orange-300"><input type="radio" name="q${qNum}" value="${o}" class="h-4 w-4 text-orange-500"><span class="ml-3 text-slate-600">${o}</span></label>`).join('')}</div>`;
+                } else {
+                    answerHtml = `<input id="q${qNum}-answer" type="text" class="mt-2 w-full p-2 border rounded-md font-mono text-sm" placeholder="Escreva o código ou comando aqui..."/>`;
+                }
+                return `<div id="q${qNum}" class="quiz-question p-4 bg-slate-50 border-l-4 border-slate-200 rounded-r-lg">${header}${answerHtml}</div>`;
+            }).join('');
+        }
+
+        function renderGabarito() {
+             const container = document.getElementById('gabarito-container');
+             container.innerHTML = data.quiz.map((q, i) => `
+                <div class="p-4 bg-white rounded-xl shadow-sm border">
+                    <p class="font-semibold text-slate-800">${i + 1}. ${q.question}</p>
+                    <p class="mt-2 p-2 bg-green-100 text-green-800 rounded-md text-sm font-mono"><strong>Resposta:</strong> ${q.answer.replace(/</g, "&lt;")}</p>
+                    <p class="mt-2 text-slate-600 text-sm">${q.explanation}</p>
+                </div>`).join('');
+        }
+
+        document.getElementById('submit-quiz').addEventListener('click', () => {
+            let score = 0;
+            data.quiz.forEach((q, i) => {
+                const qNum = i + 1;
+                const qEl = document.getElementById(`q${qNum}`);
+                qEl.classList.remove('correct', 'incorrect');
+                let userAnswer;
+                if(q.type === 'teorica') {
+                    const checked = qEl.querySelector(`input[name=q${qNum}]:checked`);
+                    userAnswer = checked ? checked.value : "";
+                } else {
+                    userAnswer = document.getElementById(`q${qNum}-answer`).value.trim();
+                }
+
+                const normalize = (str) => str.toLowerCase().replace(/['"`]/g, "").replace(/;\s*$/, "").replace(/\s+/g, ' ');
+                const isCorrect = normalize(userAnswer) === normalize(q.answer);
+
+                if (isCorrect) { score++; qEl.classList.add('correct'); } 
+                else { qEl.classList.add('incorrect'); }
+            });
+            document.getElementById('quiz-results').innerHTML = `<p class="text-2xl font-display font-bold">Você acertou ${score} de ${data.quiz.length}!</p>`;
+        });
+
+        document.getElementById('show-gabarito').addEventListener('click', () => {
+            const gabaritoWrapper = document.getElementById('gabarito-container-wrapper');
+            const isHidden = gabaritoWrapper.style.display === 'none';
+            gabaritoWrapper.style.display = isHidden ? 'block' : 'none';
+            if(isHidden) {
+                gabaritoWrapper.scrollIntoView({ behavior: 'smooth' });
+            }
+        });
+        
+        function initialize() {
+            renderPracticalGuide();
+            renderQuiz();
+            renderGabarito();
+            setupCopyButtons();
+            const initialTarget = window.location.hash.substring(1) || 'fundamentos';
+            showSection(initialTarget);
+        }
+        initialize();
+    });
+</script>
+</body>
+</html>
+
