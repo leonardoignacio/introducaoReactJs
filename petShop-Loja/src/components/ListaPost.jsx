@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { busca } from '../api/api.js';
 import { Link } from 'react-router-dom';
-
 const ListaPost = ( { url } ) => {
     const [posts, setPosts] = useState([])
-    useEffect(() => {
+    useEffect(()=>{
         busca(url, setPosts)
     }, [])
     return(
@@ -26,5 +25,4 @@ const ListaPost = ( { url } ) => {
         </section>
     )
 }
-
 export default ListaPost
