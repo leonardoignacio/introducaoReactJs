@@ -19,10 +19,7 @@
     {
       "id": "cuidados",
       "nome": "cuidados",
-      "subcategorias": [
-        "fisicos",
-        "psicologicos"
-      ]
+      "subcategorias": []
     }
   ],
   "posts": [
