@@ -1,25 +1,45 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 //npm install @mui/material @emotion/react @emotion/styled
 import { Button, TextField } from "@mui/material";
-import { useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { api } from "../../../api/api";
 
 const FormCategoria = () => {
     const [nomeCategoria, setNomeCategoria] = useState('')
+    const navigate = useNavigate();
+    const parametros = useParams()
+    useEffect(() => {
+        if (parametros.id) {
+            api.get(`categorias/${parametros.id}/`)
+                .then(resposta => setNomeCategoria(resposta.data.nome))
 
-    const CadCategoria = (evento) => {
+        }
+    }, [parametros])
+
+const CadCategoria = (evento) => {
         evento.preventDefault()
 
-        api.post(`/categorias`, {
-            id: nomeCategoria,
-            nome: nomeCategoria,
-            subcategorias: []
-        })
-            .then(()=>{
-                alert("Sucesso!")
-                window.location.href = "/admin"
+        if (parametros.id) {
+            api.put(`/categorias/${parametros.id}`, {
+                id: nomeCategoria,
+                nome: nomeCategoria,
+                subcategorias: []
             })
-
+                .then(() => {
+                    alert("Sucesso na atualização!")
+                    navigate('/admin')
+                })
+        } else {
+            api.post(`/categorias`, {
+                id: nomeCategoria,
+                nome: nomeCategoria,
+                subcategorias: []
+            })
+                .then(() => {
+                    alert("Cadastro realizado com Sucesso!")
+                    navigate('/admin')
+                })
+        }
     }
 
     return (
@@ -44,7 +64,7 @@ const FormCategoria = () => {
                         sx={{ marginTop: 1 }}
                         fullWidth
                     >
-                        Cadastrar
+                        Salvar
                     </Button>
                 </form>
             </article>

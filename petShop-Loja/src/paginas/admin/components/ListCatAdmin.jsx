@@ -45,7 +45,7 @@ const ListaCatAdmin = () => {
                                     <Link to={`/categoria/${categoria.id}`}>{categoria.nome}</Link>
                                 </td>
                                 <td colSpan="2" className="tabela__coluna--m tabela__alinhamento--direita">
-                                    <Link to={`/admin`}>
+                                    <Link to={`/admin/${categoria.id}`}>
                                         <Button
                                             type="submit"
                                             variant="contained"

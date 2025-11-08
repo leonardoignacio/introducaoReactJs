@@ -20,6 +20,11 @@
       "id": "cuidados",
       "nome": "cuidados",
       "subcategorias": []
+    },
+    {
+      "id": "Animais Silvestres",
+      "nome": "Animais Silvestres",
+      "subcategorias": []
     }
   ],
   "posts": [
