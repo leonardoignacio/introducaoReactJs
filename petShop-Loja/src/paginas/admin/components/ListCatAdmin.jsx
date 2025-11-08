@@ -14,7 +14,7 @@ const ListaCatAdmin = () => {
         api.delete(`categorias/${CategoriaDel.id}/`)
             .then(() => {
                 const listaCategorias = categorias.filter(categoria => categoria.id !== CategoriaDel.id)
-                    setCategorias([...listaCategorias])
+                setCategorias([...listaCategorias])
             })
     }
 
@@ -45,7 +45,7 @@ const ListaCatAdmin = () => {
                                     <Link to={`/categoria/${categoria.id}`}>{categoria.nome}</Link>
                                 </td>
                                 <td colSpan="2" className="tabela__coluna--m tabela__alinhamento--direita">
-                                    <Link to={`/admin/${categoria.id}`}>
+                                    <Link to={`/admin/categoria/${categoria.id}`}>
                                         <Button
                                             type="submit"
                                             variant="contained"
@@ -65,6 +65,19 @@ const ListaCatAdmin = () => {
                                             onClick={() => excluir(categoria)}
                                         >
                                             Excluir
+                                        </Button>
+                                    </Link>
+                                </td>
+                                <td>
+                                    <Link to={`/admin/categoria/sub/${categoria.id}`}>
+                                        <Button
+                                            type="submit"
+                                            variant="outlined"
+                                            color="primary"
+                                            align="right"
+                                            sx={{ margin: "0 0.25rem" }}
+                                        >
+                                            SubCategoria
                                         </Button>
                                     </Link>
                                 </td>

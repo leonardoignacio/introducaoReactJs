@@ -2,23 +2,17 @@
   "categorias": [
     {
       "id": "bem-estar",
-      "nome": "bem-estar",
-      "subcategorias": [
-        "higiene",
-        "saude"
-      ]
+      "nome": "Bem-estar",
+      "subcategorias": []
     },
     {
       "id": "comportamento",
-      "nome": "comportamento",
-      "subcategorias": [
-        "treinamento",
-        "educacao"
-      ]
+      "nome": "Comportamento",
+      "subcategorias": []
     },
     {
       "id": "cuidados",
-      "nome": "cuidados",
+      "nome": "Cuidados",
       "subcategorias": []
     },
     {
@@ -29,20 +23,18 @@
   ],
   "posts": [
     {
-      "id": "1",
       "title": "Banho no catiorrinho",
       "metadescription": "Use as utensilios certos para banhar seu cão",
       "body": "Banhos regulares mantém os pelos e pele de seu cachorro limpa, renovada e saudável. O processo de ensaboar e escovar remove resíduos de pelos e peles que já estão mortas, providenciando um maior respiro da pele de seu cachorro",
       "categoria": "bem-estar",
-      "subcategoria": "higiene"
+      "id": "1"
     },
     {
-      "id": "2",
-      "title": "Seu catiorrinho merece um tapete refrescante",
+      "title": "Seu catiorrinho merece um tapete",
       "metadescription": "O frescor que seu pet merece",
       "body": "O produto é um colchonete de nylon, recheado com espuma e gel (não tóxico), que promete refrescar os bichos. O gel interno é ativado com o peso e a pressão do animal, ou seja, começa a funcionar quando o pet está sobre ele. O tapete promete baixar a temperatura entre 6ºC e 10°C em relação à registrada no ambiente.",
       "categoria": "bem-estar",
-      "subcategoria": "higiene"
+      "id": "2"
     },
     {
       "id": "3",

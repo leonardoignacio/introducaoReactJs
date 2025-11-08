@@ -11,7 +11,10 @@ const FormCategoria = () => {
     useEffect(() => {
         if (parametros.id) {
             api.get(`categorias/${parametros.id}/`)
-                .then(resposta => setNomeCategoria(resposta.data.nome))
+                .then(resposta => {
+                    console.log(resposta)
+                    setNomeCategoria(resposta.data.nome)
+                })
 
         }
     }, [parametros])
